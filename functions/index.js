@@ -1,19 +1,14 @@
 const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
-//
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+exports.data = onRequest({maxInstances: 1, concurrency: 10}, (req, res) => {
+    res.send("Hello from Firebase!")
+});
 
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-admin.initializeApp();
-
-exports.addMessage = functions.https.onRequest(async (request, response) => {
-  logger.info("Hello logs!", {structuredData: true});
-  response.send("Hello from Firebase!");
+exports.bot = onRequest({maxInstances: 1, concurrency: 10}, (req, res) => {
+    const telegraf = require('telegraf');
+    let bot = new telegraf.Telegram("1640757959:AAEhu30jHIhq25iVVEt6_m9e-a3_5317GHE");
+    bot.sendMessage("530667295", 'New user joined 🎉').then(r => {
+        res.send(r);
+        bot = null
+    });
 });
