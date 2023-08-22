@@ -20,12 +20,14 @@ async function response() {
         console.log(act)
         /** BUY */
         if (limit < LIMIT && !!act.trade && act.date !== date) {
+            date = act.date
             limit++
             count = count - price
             report()
         }
         /** SELL */
         if (limit > -LIMIT && !act.trade && act.date !== date) {
+            date = act.date
             limit--
             count = count + price
             report()
