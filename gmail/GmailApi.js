@@ -85,11 +85,11 @@ class GmailAPI {
     readInboxContent = async (searchText) => {
         const threadId = await this.searchGmail(searchText);
         const message = await this.readGmailContent(threadId);
-        let decodedStr = ""
+        let trade = false
         let date = ""
         for (let i in message.payload.headers) {
-            if (message.payload.headers[i].name === 'Subject') decodedStr = message.payload.headers[i].value.substr(12, 1)
-            if (message.payload.headers[i].name === 'Date') date = message.payload.headers[i].value
+            if (message.payload.headers[i].name === 'Subject') trade = message.payload.headers[i].value.substr(12, 1) === '1';
+            if (message.payload.headers[i].name === 'Date') date = message.payload.headers[i].value;
         }
 
         // const encodedMessage = await message.payload["parts"][0].body.data;
@@ -97,7 +97,7 @@ class GmailAPI {
         // console.log(decodedStr);
         return {
             date: date,
-            trade: decodedStr
+            trade: trade
         };
     };
 }
