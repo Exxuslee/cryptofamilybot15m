@@ -78,18 +78,24 @@ class GmailAPI {
         const message = await this.readGmailContent(threadId);
         let trade = false
         let date = ""
-        for (let i in message.payload.headers) {
-            if (message.payload.headers[i].name === 'Subject') trade = message.payload.headers[i].value.substr(12, 1) === '1';
-            if (message.payload.headers[i].name === 'Date') date = message.payload.headers[i].value;
-        }
+        if (message.payload.headers.size > 0) {
+            for (let i in message.payload.headers) {
+                if (message.payload.headers[i].name === 'Subject') trade = message.payload.headers[i].value.substr(12, 1) === '1';
+                if (message.payload.headers[i].name === 'Date') date = message.payload.headers[i].value;
+            }
 
-        // const encodedMessage = await message.payload["parts"][0].body.data;
-        // const decodedStr = Buffer.from(encodedMessage, "base64").toString("ascii");
-        // console.log(decodedStr);
-        return {
-            date: date,
-            trade: trade
+            // const encodedMessage = await message.payload["parts"][0].body.data;
+            // const decodedStr = Buffer.from(encodedMessage, "base64").toString("ascii");
+            // console.log(decodedStr);
+            return {
+                date: date,
+                trade: trade
+            };
+        } else return {
+            date: "",
+            trade: 0
         };
+
     };
 }
 

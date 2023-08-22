@@ -18,14 +18,14 @@ telegram.sendTelegramMessage('>> CFbot <<')
 async function response() {
         gmail.readInboxContent(process.env.READ_INBOX_GMAIL).then(act => {
             /** BUY */
-            if (limit < LIMIT && !act.trade && act.date !== date) {
+            if (limit < LIMIT && !act.trade && act.date !== date && act.date !== "") {
                 date = act.date
                 limit++
                 count = count - price - 1
                 report()
             }
             /** SELL */
-            if (limit > -LIMIT && act.trade && act.date !== date) {
+            if (limit > -LIMIT && act.trade && act.date !== date && act.date !== "") {
                 date = act.date
                 limit--
                 count = count + price - 1
