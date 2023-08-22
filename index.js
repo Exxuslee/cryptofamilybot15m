@@ -12,11 +12,10 @@ let count = 0
 let date = ""
 let price = 0
 
-console.log('==== 💵 CFB 💵 =====')
-telegram.sendTelegramMessage('>>> CFB <<<')
+console.log('==== 💵 CFbot 💵 =====')
+telegram.sendTelegramMessage('>> CFbot <<')
 
 async function response() {
-    try {
         gmail.readInboxContent(process.env.READ_INBOX_GMAIL).then(act => {
             /** BUY */
             if (limit < LIMIT && !act.trade && act.date !== date) {
@@ -43,9 +42,6 @@ async function response() {
                 telegram.sendTelegramMessage(tgMessage)
             }
         });
-    } catch (e) {
-        console.log(e)
-    }
 }
 
 gmail.readInboxContent(process.env.READ_INBOX_GMAIL).then(act => date = act.date)

@@ -5,10 +5,6 @@ const qs = require("qs");
 class GmailAPI {
     accessToken = "";
 
-    constructor() {
-        this.accessToken = this.getAcceToken();
-    }
-
     getAcceToken = async () => {
         const data = qs.stringify({
             client_id: process.env.CLIENT_ID_GMAIL,
@@ -24,9 +20,7 @@ class GmailAPI {
             },
             data: data,
         };
-
         let accessToken = "";
-
         await axios(config)
             .then(async function (response) {
                 accessToken = await response.data.access_token;
@@ -35,18 +29,14 @@ class GmailAPI {
             .catch(function (error) {
                 console.log(error);
             });
-
-        return accessToken;
+        this.accessToken = accessToken
     };
 
     searchGmail = async (searchItem) => {
         const config1 = {
             method: "get",
-            url:
-                "https://www.googleapis.com/gmail/v1/users/me/messages?q=" + searchItem,
-            headers: {
-                Authorization: `Bearer ${await this.accessToken} `,
-            },
+            url: "https://www.googleapis.com/gmail/v1/users/me/messages?q=" + searchItem,
+            headers: {Authorization: `Bearer ${this.accessToken}`,},
         };
         let threadId = "";
 
@@ -66,7 +56,7 @@ class GmailAPI {
             method: "get",
             url: `https://gmail.googleapis.com/gmail/v1/users/me/messages/${messageId}`,
             headers: {
-                Authorization: `Bearer ${await this.accessToken}`,
+                Authorization: `Bearer ${this.accessToken}`,
             },
         };
 
@@ -83,6 +73,7 @@ class GmailAPI {
     };
 
     readInboxContent = async (searchText) => {
+        await this.getAcceToken()
         const threadId = await this.searchGmail(searchText);
         const message = await this.readGmailContent(threadId);
         let trade = false

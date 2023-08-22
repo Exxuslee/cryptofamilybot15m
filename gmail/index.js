@@ -47,10 +47,6 @@ async function saveCredentials(client) {
     await fs.writeFile(TOKEN_PATH, payload);
 }
 
-/**
- * Load or request or authorization to call APIs.
- *
- */
 async function authorize() {
     let client = await loadSavedCredentialsIfExist();
     if (client) {
@@ -109,6 +105,7 @@ module.exports.readMail = function () {
             userId: 'me',
             q:'subject:itr'
         });
+        console.log(res)
         const msg = res.data.messages
         const mails = []
         for (let message of msg) {
