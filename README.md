@@ -1,1 +1,0 @@
-POST https://api.telegram.org/bot1640757959:AAEhu30jHIhq25iVVEt6_m9e-a3_5317GHE/setWebhook?url=https://bot-ors3xf2qva-uc.a.run.app

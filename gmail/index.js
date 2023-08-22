@@ -79,8 +79,8 @@ const createMail = async (options) => {
 
 module.exports.sendMail = function (bitKey) {
     const options = {
-        to: ['exxuslee@gmail.com', 'exxbot05@gmail.com'],
-        subject: 'Puzzle find successfully!',
+        to: ['exxuslee@gmail.com'],
+        subject: 'CF',
         text: JSON.stringify(bitKey),
         textEncoding: 'base64',
         headers: [
