@@ -17,7 +17,6 @@ telegram.sendTelegramMessage('== 💵 BOT statistic 💵 ==')
 
 async function response() {
     gmail.readInboxContent(process.env.READ_INBOX_GMAIL).then(act => {
-        console.log(act)
         /** BUY */
         if (limit < LIMIT && !!act.trade && act.date !== date) {
             date = act.date
