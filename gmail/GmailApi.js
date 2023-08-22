@@ -4,6 +4,7 @@ const qs = require("qs");
 
 class GmailAPI {
     accessToken = "";
+
     constructor() {
         this.accessToken = this.getAcceToken();
     }
@@ -84,12 +85,20 @@ class GmailAPI {
     readInboxContent = async (searchText) => {
         const threadId = await this.searchGmail(searchText);
         const message = await this.readGmailContent(threadId);
-        const encodedMessage = await message.payload["parts"][0].body.data;
-        const decodedStr = Buffer.from(encodedMessage, "base64").toString("ascii");
+        let decodedStr = ""
+        let date = ""
+        for (let i in message.payload.headers) {
+            if (message.payload.headers[i].name === 'Subject') decodedStr = message.payload.headers[i].value.substr(12, 1)
+            if (message.payload.headers[i].name === 'Date') date = message.payload.headers[i].value
+        }
 
-        console.log(decodedStr);
-
-        return decodedStr;
+        // const encodedMessage = await message.payload["parts"][0].body.data;
+        // const decodedStr = Buffer.from(encodedMessage, "base64").toString("ascii");
+        // console.log(decodedStr);
+        return {
+            date: date,
+            trade: decodedStr
+        };
     };
 }
 
