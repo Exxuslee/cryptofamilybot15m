@@ -24,7 +24,7 @@ class GmailAPI {
         await axios(config)
             .then(async function (response) {
                 accessToken = await response.data.access_token;
-                // console.log("Access Token " + accessToken);
+                console.log("AccessToken: " + accessToken.length);
             })
             .catch(function (error) {
                 console.log(error);
@@ -36,14 +36,14 @@ class GmailAPI {
         const config1 = {
             method: "get",
             url: "https://www.googleapis.com/gmail/v1/users/me/messages?q=" + searchItem,
-            headers: {Authorization: `Bearer ${this.accessToken}`,},
+            headers: {Authorization: `Bearer ${this.accessToken}`},
         };
         let threadId = "";
 
         await axios(config1)
             .then(async function (response) {
                 threadId = await response.data["messages"][0].id;
-                // console.log("ThreadId = " + threadId);
+                // console.log("threadId: " + threadId);
             })
             .catch(function (error) {
                 console.log(error);
@@ -55,9 +55,7 @@ class GmailAPI {
         const config = {
             method: "get",
             url: `https://gmail.googleapis.com/gmail/v1/users/me/messages/${messageId}`,
-            headers: {
-                Authorization: `Bearer ${this.accessToken}`,
-            },
+            headers: {Authorization: `Bearer ${this.accessToken}`},
         };
 
         let data = {};
@@ -74,28 +72,23 @@ class GmailAPI {
 
     readInboxContent = async (searchText) => {
         await this.getAcceToken()
+        let trade = ""
         const threadId = await this.searchGmail(searchText);
         const message = await this.readGmailContent(threadId);
-        let trade = false
-        let date = ""
-        if (message.payload.headers.size > 0) {
+
+        if (message.payload.headers.length > 0) {
             for (let i in message.payload.headers) {
-                if (message.payload.headers[i].name === 'Subject') trade = message.payload.headers[i].value.substr(12, 1) === '1';
-                if (message.payload.headers[i].name === 'Date') date = message.payload.headers[i].value;
+                if (message.payload.headers[i].name === 'Subject') trade = message.payload.headers[i].value.substr(12, 1) === '1' ? 'SELL' : 'BUY'
             }
-
-            // const encodedMessage = await message.payload["parts"][0].body.data;
-            // const decodedStr = Buffer.from(encodedMessage, "base64").toString("ascii");
-            // console.log(decodedStr);
-            return {
-                date: date,
-                trade: trade
-            };
-        } else return {
-            date: "",
-            trade: 0
-        };
-
+        }
+        // const encodedMessage = await message.payload["parts"][0].body.data;
+        // const decodedStr = Buffer.from(encodedMessage, "base64").toString("ascii");
+        // console.log(decodedStr);
+        console.log({date: threadId, trade: trade})
+        return {
+            date: threadId,
+            trade: trade
+        }
     };
 }
 
