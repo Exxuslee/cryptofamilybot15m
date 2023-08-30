@@ -12,5 +12,4 @@ const bot = new telegram(token, {polling: true});
 
 module.exports.sendTelegramMessage = function (message) {
     bot.sendMessage(process.env.TELEGRAM_CHAT_ID, message)
-    bot.sendMessage(process.env.TELEGRAM_CHAT_ID_IRA, message)
 };

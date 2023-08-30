@@ -13,7 +13,7 @@ let date = ""
 let price = 0
 
 console.log('==== 💵 CFbot 💵 =====')
-telegram.sendTelegramMessage('>> CFbot <<')
+telegram.sendTelegramMessage('>CFbot 15m<')
 
 async function response() {
         gmail.readInboxContent(process.env.READ_INBOX_GMAIL).then(act => {
@@ -44,5 +44,5 @@ async function response() {
 }
 
 gmail.readInboxContent(process.env.READ_INBOX_GMAIL).then(act => date = act.date)
-setInterval(response, 60000)
+setInterval(response, 300000)
 client.ws.aggTrades([SYMBOL], act => price = +act.price)

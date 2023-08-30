@@ -76,7 +76,7 @@ class GmailAPI {
         const threadId = await this.searchGmail(searchText);
         const message = await this.readGmailContent(threadId);
 
-        if (message.payload.headers.length > 0) {
+        if (message.payload?.headers?.length > 0) {
             for (let i in message.payload.headers) {
                 if (message.payload.headers[i].name === 'Subject') trade = message.payload.headers[i].value.substr(12, 1) === '1' ? 'SELL' : 'BUY'
             }
